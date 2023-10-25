@@ -7,6 +7,10 @@ android {
     namespace = "com.example.movieinfomation"
     compileSdk = 34
 
+    buildFeatures {
+        viewBinding = true
+    }
+
     defaultConfig {
         applicationId = "com.example.movieinfomation"
         minSdk = 24
@@ -44,4 +48,11 @@ dependencies {
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
+    //Timber
+    implementation ("com.jakewharton.timber:timber:5.0.1")
+    //Material design
+    implementation ("com.google.android.material:material:1.10.0")
+    //Navigation
+    implementation("androidx.navigation:navigation-fragment-ktx:2.7.4")
+    implementation("androidx.navigation:navigation-ui-ktx:2.7.4")
 }
