@@ -6,14 +6,90 @@
     android:layout_height="match_parent"
     android:background="@color/dark">
 
-    <TextView
-        android:text="home"
-        android:textSize="50sp"
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tvWelcome"
+        android:text="Hello Toan! Let's find your favorite movies"
+        android:textSize="18sp"
+        android:layout_marginStart="20dp"
+        android:textColor="@color/white"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"/>
+
+
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewpagerPopularMovie"
+        android:layout_marginTop="40dp"
+        app:layout_constraintTop_toBottomOf="@id/tvWelcome"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="190dp"/>
+
+    <me.relex.circleindicator.CircleIndicator3
+        android:id="@+id/circleIndicator"
+        app:layout_constraintTop_toBottomOf="@id/viewpagerPopularMovie"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_width="0dp"
+        android:layout_height="40dp"/>
+
+    
+    <Spinner
+        android:id="@+id/spinnerCategories"
+        android:layout_marginStart="20dp"
+        android:entries="@array/categories"
+        app:layout_constraintTop_toBottomOf="@id/circleIndicator"
+        app:layout_constraintStart_toStartOf="parent"
+        android:textAlignment="center"
+        android:background="@android:color/transparent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tvSeeAll"
+        android:text="See All"
+        android:textSize="16sp"
+        android:textColor="@color/blue_accent"
+        app:layout_constraintTop_toTopOf="@id/spinnerCategories"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="40dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rcvCategorizedMovie"
+        app:layout_constraintTop_toBottomOf="@id/spinnerCategories"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tvContinueWatching"
+        android:text="Continue Watching"
+        android:textStyle="bold"
+        android:textSize="18sp"
+        android:textColor="@color/white"
+        app:layout_constraintTop_toBottomOf="@id/rcvCategorizedMovie"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rcvContinueWatching"
+        app:layout_constraintTop_toBottomOf="@id/tvContinueWatching"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

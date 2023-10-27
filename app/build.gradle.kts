@@ -1,6 +1,8 @@
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
+    kotlin("kapt")
+    id("com.google.dagger.hilt.android")
 }
 
 android {
@@ -55,4 +57,17 @@ dependencies {
     //Navigation
     implementation("androidx.navigation:navigation-fragment-ktx:2.7.4")
     implementation("androidx.navigation:navigation-ui-ktx:2.7.4")
+    //Glide
+    implementation ("com.github.bumptech.glide:glide:4.16.0")
+    //Viewpager2
+    implementation("androidx.viewpager2:viewpager2:1.0.0")
+    //CircleIndicator
+    implementation ("me.relex:circleindicator:2.1.6")
+    //Dagger hilt
+    implementation("com.google.dagger:hilt-android:2.46")
+    kapt("com.google.dagger:hilt-android-compiler:2.46")
+}
+
+kapt {
+    correctErrorTypes = true
 }
