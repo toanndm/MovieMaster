@@ -66,6 +66,8 @@ dependencies {
     //Dagger hilt
     implementation("com.google.dagger:hilt-android:2.46")
     kapt("com.google.dagger:hilt-android-compiler:2.46")
+    //Themed toggle button
+    implementation ("nl.bryanderidder:themed-toggle-button-group:1.4.1")
 }
 
 kapt {

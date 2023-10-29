@@ -6,13 +6,136 @@
     android:layout_height="match_parent"
     android:background="@color/dark">
 
-    <TextView
-        android:text="search"
-        android:textSize="50sp"
+    <androidx.cardview.widget.CardView
+        android:id="@+id/searchViewContainer"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_marginEnd="20dp"
+        app:cardCornerRadius="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:background="@color/soft"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/imgSearch"
+                android:src="@drawable/ic_search"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"/>
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/tvSearch"
+                app:layout_constraintStart_toEndOf="@id/imgSearch"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="@id/imgSearch"
+                android:textColorHint="@color/grey"
+                android:fontFamily="sans-serif"
+                android:maxLines="1"
+                android:textSize="16sp"
+                android:hint="Search for a movie, TV show, person,..."
+                app:layout_constraintBottom_toBottomOf="@id/imgSearch"
+                android:background="@android:color/transparent"
+                android:layout_width="0dp"
+                android:layout_height="0dp"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tvTrending"
+        android:text="Trending"
+        android:fontFamily="sans-serif"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/searchViewContainer"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rcvTrending"
+        app:layout_constraintTop_toBottomOf="@id/tvTrending"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="10dp"
+        android:layout_marginStart="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
+    <nl.bryanderidder.themedtogglebuttongroup.ThemedToggleButtonGroup
+        android:id="@+id/toggle_button_group"
+        app:layout_constraintStart_toEndOf="@id/tvTrending"
+        app:layout_constraintTop_toTopOf="@id/tvTrending"
+        app:layout_constraintBottom_toBottomOf="@id/tvTrending"
+        android:layout_marginStart="15dp"
+        app:toggle_horizontalSpacing="0dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <nl.bryanderidder.themedtogglebuttongroup.ThemedButton
+            android:id="@+id/btnToday"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:toggle_backgroundColor="@color/dark"
+            app:toggle_textAlignment="center"
+            app:toggle_textColor="@color/grey"
+            app:toggle_borderColor="@color/soft"
+            app:toggle_selectedBorderColor="@color/blue_accent"
+            app:toggle_selectedBackgroundColor="@color/soft"
+            app:toggle_selectedTextColor="@color/blue_accent"
+            app:toggle_borderWidth="2dp"
+            app:toggle_textSize="14sp"
+            app:toggle_text="Today" />
+
+        <nl.bryanderidder.themedtogglebuttongroup.ThemedButton
+            android:id="@+id/btnThisWeek"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:toggle_textAlignment="center"
+            app:toggle_backgroundColor="@color/dark"
+            app:toggle_textColor="@color/grey"
+            app:toggle_borderWidth="2dp"
+            app:toggle_borderColor="@color/soft"
+            app:toggle_selectedBorderColor="@color/blue_accent"
+            app:toggle_selectedBackgroundColor="@color/soft"
+            app:toggle_selectedTextColor="@color/blue_accent"
+            app:toggle_textSize="14sp"
+            app:toggle_text="This week" />
+
+    </nl.bryanderidder.themedtogglebuttongroup.ThemedToggleButtonGroup>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tvRecommend"
+        android:text="Recommend for you"
+        android:fontFamily="sans-serif"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/rcvTrending"
+        android:layout_marginStart="20dp"
+        android:layout_marginTop="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tvSeeAll"
+        android:text="See All"
+        android:textSize="16sp"
+        android:textColor="@color/blue_accent"
+        app:layout_constraintTop_toTopOf="@id/tvRecommend"
         app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="40dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
