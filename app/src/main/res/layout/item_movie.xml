@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:backgroundTint="@color/soft"
+    android:layout_margin="10dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="20dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/imgPoster1"
+            android:layout_width="160dp"
+            android:layout_height="210dp"
+            app:layout_constraintBottom_toTopOf="@id/tvTitle1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintVertical_bias="0.0" />
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/starContainer"
+            android:background="@color/soft"
+            android:backgroundTint="@color/soft"
+            app:layout_constraintTop_toTopOf="@id/imgPoster1"
+            app:layout_constraintEnd_toEndOf="@id/imgPoster1"
+            app:cardCornerRadius="20dp"
+            android:layout_marginEnd="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <ImageView
+                    android:layout_margin="5dp"
+                    android:src="@drawable/baseline_star_rate_24"
+                    android:layout_gravity="center"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/tvRate1"
+                    android:text="5.0"
+                    android:textStyle="bold"
+                    android:textColor="@color/orange"
+                    android:layout_gravity="center"
+                    android:textSize="14sp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+        </androidx.cardview.widget.CardView>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tvTitle1"
+            android:text="Movie"
+            android:maxLines="1"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:textColor="@color/white"
+            android:fontFamily="sans-serif"
+            android:layout_marginBottom="2dp"
+            android:layout_marginStart="10dp"
+            app:layout_constraintStart_toStartOf="@id/imgPoster1"
+            app:layout_constraintEnd_toEndOf="@id/imgPoster1"
+            app:layout_constraintBottom_toTopOf="@id/tvDate1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"/>
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tvDate1"
+            android:text="20-10-2023"
+            android:textSize="14sp"
+            android:textColor="@color/white_grey"
+            android:textStyle="italic"
+            android:fontFamily="sans-serif"
+            android:layout_marginStart="10dp"
+            app:layout_constraintStart_toStartOf="@id/imgPoster1"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginBottom="2dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>
