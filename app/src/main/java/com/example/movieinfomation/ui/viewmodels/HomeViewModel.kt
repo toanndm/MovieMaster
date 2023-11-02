@@ -18,11 +18,15 @@ class HomeViewModel @Inject constructor(private val repository: HomeRepository):
     var genresResponse = MutableLiveData<NetWorkResult<Genres>>()
     var popularTodayResponse = MutableLiveData<NetWorkResult<MovieResponse>>()
     var moviesWithGenre = MutableLiveData<NetWorkResult<MovieResponse>>()
+    var moviesTrendingDay = MutableLiveData<NetWorkResult<MovieResponse>>()
+    var moviesNowPlaying = MutableLiveData<NetWorkResult<MovieResponse>>()
 
     init {
         getGenres()
         getPopularToday()
         getMoviesWithGenre()
+        getMoviesTrending()
+        getMoviesNowPlaying()
     }
 
     fun getMoviesWithGenre(genre: Int = 27) {
@@ -76,4 +80,37 @@ class HomeViewModel @Inject constructor(private val repository: HomeRepository):
         }
     }
 
+    fun getMoviesTrending(timeWindow: String = "day") {
+        moviesTrendingDay.postValue(NetWorkResult.Loading<MovieResponse>())
+        try {
+            viewModelScope.launch {
+                val response = repository.getMoviesTrending(timeWindow, ApiKey.getApiKey())
+                if (response.isSuccessful) {
+                    moviesTrendingDay.postValue(NetWorkResult.Success<MovieResponse>(response.body()))
+                } else {
+                    moviesTrendingDay.postValue(NetWorkResult.Error<MovieResponse>("Network error!!!"))
+                }
+            }
+
+        } catch (e: Exception) {
+            moviesTrendingDay.postValue(NetWorkResult.Error<MovieResponse>(e.message))
+        }
+    }
+
+    private fun getMoviesNowPlaying() {
+        moviesNowPlaying.postValue(NetWorkResult.Loading<MovieResponse>())
+        try {
+            viewModelScope.launch {
+                val response = repository.getNowPlaying(ApiKey.getApiKey())
+                if (response.isSuccessful) {
+                    moviesNowPlaying.postValue(NetWorkResult.Success<MovieResponse>(response.body()))
+                } else {
+                    moviesNowPlaying.postValue(NetWorkResult.Error<MovieResponse>("Network error!!!"))
+                }
+            }
+
+        } catch (e: Exception) {
+            moviesNowPlaying.postValue(NetWorkResult.Error<MovieResponse>(e.message))
+        }
+    }
 }

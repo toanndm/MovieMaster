@@ -33,6 +33,7 @@ import java.util.TimerTask
 @AndroidEntryPoint
 class HomeFragment : Fragment(R.layout.fragment_home) {
     private val homeViewModel: HomeViewModel by viewModels()
+    private lateinit var timer: Timer
     private lateinit var binding: FragmentHomeBinding
     private lateinit var listGenres: List<Genre>
 
@@ -136,7 +137,8 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     }
 
     private fun autoSlideImage() {
-        Timer().schedule(object: TimerTask(){
+        timer = Timer()
+        timer.schedule(object: TimerTask(){
             var isPlus = true
             var isFirstRun = true
             override fun run() {
@@ -206,6 +208,16 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
             }
         }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        timer.cancel()
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        timer.cancel()
     }
 
 }

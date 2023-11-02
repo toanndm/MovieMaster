@@ -4,6 +4,8 @@ import com.example.movieinfomation.models.Genres
 import com.example.movieinfomation.models.MovieResponse
 import retrofit2.Response
 import retrofit2.http.GET
+import retrofit2.http.PATCH
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface ApiService {
@@ -16,9 +18,23 @@ interface ApiService {
         @Query("page") page: Int
     ): Response<MovieResponse>
 
-    @GET("https://api.themoviedb.org/3/discover/movie")
+    @GET("discover/movie")
     suspend fun getMoviesWithGenres(
         @Query("api_key") apiKey: String,
         @Query("with_genres") genres: Int
     ): Response<MovieResponse>
+
+    @GET("trending/movie/{time_window}")
+    suspend fun getMoviesTrending(
+        @Path("time_window")
+        timeWindow: String,
+        @Query("api_key") apiKey: String
+    ): Response<MovieResponse>
+
+    @GET("movie/now_playing")
+    suspend fun getNowPlaying(
+        @Query("api_key")
+        apiKey: String
+    ): Response<MovieResponse>
+
 }

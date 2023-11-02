@@ -15,4 +15,15 @@ class HomeRepository @Inject constructor(private val apiService: ApiService) {
         apiKey: String,
         genre: Int
     ) = apiService.getMoviesWithGenres(apiKey, genre)
+
+    suspend fun getMoviesTrending(
+        timeWindow: String,
+        apiKey: String
+    ) = apiService.getMoviesTrending(timeWindow, apiKey)
+
+    suspend fun getNowPlaying(
+        apiKey: String
+    ) = apiService.getNowPlaying(apiKey)
+
+
 }
