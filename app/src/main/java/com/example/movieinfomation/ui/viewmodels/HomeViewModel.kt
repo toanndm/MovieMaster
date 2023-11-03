@@ -1,7 +1,5 @@
 package com.example.movieinfomation.ui.viewmodels
 
-import android.content.pm.ModuleInfo
-import android.text.BoringLayout
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -13,20 +11,26 @@ import com.example.movieinfomation.other.NetWorkResult
 import com.example.movieinfomation.repositories.HomeRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
+import timber.log.Timber
 import javax.inject.Inject
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(private val repository: HomeRepository): ViewModel() {
     var genresResponse = MutableLiveData<NetWorkResult<Genres>>()
+
     var popularTodayResponse = MutableLiveData<NetWorkResult<MovieResponse>>()
+
     var moviesWithGenre = MutableLiveData<NetWorkResult<MovieResponse>>()
-    var moviesTrendingDay = MutableLiveData<NetWorkResult<MovieResponse>>()
+
+    var moviesTrending = MutableLiveData<NetWorkResult<MovieResponse>>()
+
     var moviesNowPlaying = MutableLiveData<NetWorkResult<MovieResponse>>()
+
     var moviesSearch = MutableLiveData<NetWorkResult<MovieResponse>>()
+    var searchPage = 0
     var query = MutableLiveData<String>("")
     var isSearching = MutableLiveData<Boolean>()
     var idToGenre: Map<Int, String>? = null
-    var isF1 = false
 
     init {
         getGenres()
@@ -37,10 +41,11 @@ class HomeViewModel @Inject constructor(private val repository: HomeRepository):
     }
 
     fun getMoviesSearch(query: String) {
+        searchPage++
         moviesSearch.postValue(NetWorkResult.Loading<MovieResponse>())
         try {
             viewModelScope.launch {
-                val response = repository.getMovieBySearch(ApiKey.getApiKey(), query)
+                val response = repository.getMovieBySearch(ApiKey.getApiKey(), query, searchPage)
                 if (response.isSuccessful) {
                     moviesSearch.postValue(NetWorkResult.Success<MovieResponse>(response.body()))
                 } else {
@@ -107,19 +112,19 @@ class HomeViewModel @Inject constructor(private val repository: HomeRepository):
     }
 
     fun getMoviesTrending(timeWindow: String = "day") {
-        moviesTrendingDay.postValue(NetWorkResult.Loading<MovieResponse>())
+        moviesTrending.postValue(NetWorkResult.Loading<MovieResponse>())
         try {
             viewModelScope.launch {
                 val response = repository.getMoviesTrending(timeWindow, ApiKey.getApiKey())
                 if (response.isSuccessful) {
-                    moviesTrendingDay.postValue(NetWorkResult.Success<MovieResponse>(response.body()))
+                    moviesTrending.postValue(NetWorkResult.Success<MovieResponse>(response.body()))
                 } else {
-                    moviesTrendingDay.postValue(NetWorkResult.Error<MovieResponse>("Network error!!!"))
+                    moviesTrending.postValue(NetWorkResult.Error<MovieResponse>("Network error!!!"))
                 }
             }
 
         } catch (e: Exception) {
-            moviesTrendingDay.postValue(NetWorkResult.Error<MovieResponse>(e.message))
+            moviesTrending.postValue(NetWorkResult.Error<MovieResponse>(e.message))
         }
     }
 

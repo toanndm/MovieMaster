@@ -12,13 +12,13 @@ data class Movie (
     @SerializedName("backdrop_path")
     val backdropPath: String = "",
     @SerializedName("genre_ids")
-    val genre: List<Int>,
+    val genre: List<Int> = mutableListOf(),
     @SerializedName("release_date")
-    val releaseDate: String,
+    val releaseDate: String = "",
     @SerializedName("title")
     val title: String = "",
     @SerializedName("vote_average")
     val voteAverage: Float = 0f,
     @SerializedName("vote_count")
-    val voteCount: Int
+    val voteCount: Int = 0
 )

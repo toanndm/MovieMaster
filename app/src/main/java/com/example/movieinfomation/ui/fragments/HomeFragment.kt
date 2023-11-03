@@ -68,9 +68,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                     }
 
                 }
-                is NetWorkResult.Loading -> {
-
-                }
+                is NetWorkResult.Loading -> {}
                 is NetWorkResult.Error -> {
                     AppUtils.showDialogError(requireContext())
                 }
@@ -89,9 +87,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                         setCustomSpinner(categories)
                     }
                 }
-                is NetWorkResult.Loading -> {
-
-                }
+                is NetWorkResult.Loading -> {}
                 is NetWorkResult.Error -> {
                     AppUtils.showDialogError(requireContext())
                 }
@@ -102,28 +98,11 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             when (response) {
                 is NetWorkResult.Success -> {
                     response.data?.let {
-                        val adapter = ViewPagerAdapter(it.movieItems.take(5), requireContext())
-                        binding.viewpagerPopularMovie.adapter = adapter
-                        val compositePageTransformer = CompositePageTransformer().apply {
-                            addTransformer(MarginPageTransformer(40))
-                            addTransformer(ViewPager2.PageTransformer { page, position ->
-                                val r: Float = 1f - Math.abs(position)
-                                page.scaleY = 0.85f + r * 0.15f
-                            })
-                        }
-                        binding.circleIndicator.setViewPager(binding.viewpagerPopularMovie)
-                        binding.viewpagerPopularMovie.apply {
-                            offscreenPageLimit = 3
-                            clipToPadding = false
-                            clipChildren = false
-                            setPageTransformer(compositePageTransformer)
-                        }
-                        autoSlideImage()
+                        val list = it.movieItems.take(5)
+                        setViewPager(list)
                     }
                 }
-                is NetWorkResult.Loading -> {
-
-                }
+                is NetWorkResult.Loading -> {}
                 is NetWorkResult.Error -> {
                     AppUtils.showDialogError(requireContext())
                 }
@@ -138,6 +117,26 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         }
 
+    }
+
+    private fun setViewPager(list: List<Movie>) {
+        val adapter = ViewPagerAdapter(list, requireContext())
+        binding.viewpagerPopularMovie.adapter = adapter
+        val compositePageTransformer = CompositePageTransformer().apply {
+            addTransformer(MarginPageTransformer(40))
+            addTransformer(ViewPager2.PageTransformer { page, position ->
+                val r: Float = 1f - Math.abs(position)
+                page.scaleY = 0.85f + r * 0.15f
+            })
+        }
+        binding.circleIndicator.setViewPager(binding.viewpagerPopularMovie)
+        binding.viewpagerPopularMovie.apply {
+            offscreenPageLimit = 3
+            clipToPadding = false
+            clipChildren = false
+            setPageTransformer(compositePageTransformer)
+        }
+        autoSlideImage()
     }
 
     private fun autoSlideImage() {

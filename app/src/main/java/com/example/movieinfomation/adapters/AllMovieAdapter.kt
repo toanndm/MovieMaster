@@ -6,17 +6,20 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.recyclerview.widget.AsyncListDiffer
+import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.movieinfomation.R
 import com.example.movieinfomation.models.Movie
 
 class AllMovieAdapter(
-    private val list: List<Movie>,
     private val idToName: Map<Int, String>,
     private val context: Context
 ): RecyclerView.Adapter<AllMovieAdapter.AllMovieViewHolder>() {
+
     class AllMovieViewHolder(itemView: View): RecyclerView.ViewHolder(itemView) {
         val imgPoster: ImageView = itemView.findViewById(R.id.imgPoster2)
         val tvTitle: TextView = itemView.findViewById(R.id.tvTitle2)
@@ -25,23 +28,40 @@ class AllMovieAdapter(
         val tvDate: TextView = itemView.findViewById(R.id.tvReleaseDate2)
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AllMovieViewHolder {
+    private val differCallback = object : DiffUtil.ItemCallback<Movie>() {
+        override fun areItemsTheSame(oldItem: Movie, newItem: Movie): Boolean {
+            return oldItem.id == newItem.id
+        }
+
+        override fun areContentsTheSame(oldItem: Movie, newItem: Movie): Boolean {
+            return oldItem == newItem
+        }
+    }
+
+    val differ = AsyncListDiffer(this, differCallback)
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AllMovieViewHolder{
         val view = LayoutInflater.from(parent.context).inflate(R.layout.all_movie_item, parent, false)
         return AllMovieViewHolder(view)
     }
 
+
+
+
     override fun onBindViewHolder(holder: AllMovieViewHolder, position: Int) {
-        val url = list[position].posterPath
+        val movie = differ.currentList[position]
+        val url = movie.posterPath
         Glide
             .with(context)
             .load("https://image.tmdb.org/t/p/original/$url")
+            .error(R.drawable.not_available)
             .centerCrop()
             .into(holder.imgPoster)
-        holder.tvRate.text = list[position].voteAverage.toString()
-        holder.tvTitle.text = list[position].title
-        holder.tvDate.text = list[position].releaseDate
+        holder.tvRate.text = movie.voteAverage.toString()
+        holder.tvTitle.text = movie.title
+        holder.tvDate.text = movie.releaseDate
         val space = ", "
-        val idGenres = list[position].genre
+        val idGenres = movie.genre
         var textGenres = ""
         if (idGenres.isNotEmpty()) {
             textGenres += idToName[idGenres[0]]
@@ -53,6 +73,6 @@ class AllMovieAdapter(
     }
 
     override fun getItemCount(): Int {
-        return list.size
+        return differ.currentList.size
     }
 }

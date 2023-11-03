@@ -42,7 +42,9 @@ interface ApiService {
         @Query("api_key")
         apiKey: String,
         @Query("query")
-        query: String
+        query: String,
+        @Query("page")
+        page: Int
     ): Response<MovieResponse>
 
 }
