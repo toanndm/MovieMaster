@@ -11,6 +11,7 @@ import android.widget.AdapterView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.core.view.get
+import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -24,18 +25,21 @@ import com.example.movieinfomation.adapters.ViewPagerAdapter
 import com.example.movieinfomation.databinding.FragmentHomeBinding
 import com.example.movieinfomation.models.Genre
 import com.example.movieinfomation.models.Movie
+import com.example.movieinfomation.other.AppUtils
 import com.example.movieinfomation.other.NetWorkResult
 import com.example.movieinfomation.ui.viewmodels.HomeViewModel
+import com.google.android.material.bottomnavigation.BottomNavigationView
 import dagger.hilt.android.AndroidEntryPoint
+import timber.log.Timber
 import java.util.Timer
 import java.util.TimerTask
 
 @AndroidEntryPoint
 class HomeFragment : Fragment(R.layout.fragment_home) {
-    private val homeViewModel: HomeViewModel by viewModels()
+    private val homeViewModel: HomeViewModel by activityViewModels()
     private lateinit var timer: Timer
     private lateinit var binding: FragmentHomeBinding
-    private lateinit var listGenres: List<Genre>
+    private var listGenres: List<Genre>? = null
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -68,7 +72,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
                 }
                 is NetWorkResult.Error -> {
-                    showDialogError()
+                    AppUtils.showDialogError(requireContext())
                 }
             }
         })
@@ -89,7 +93,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
                 }
                 is NetWorkResult.Error -> {
-                    showDialogError()
+                    AppUtils.showDialogError(requireContext())
                 }
             }
         })
@@ -121,7 +125,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
                 }
                 is NetWorkResult.Error -> {
-                    showDialogError()
+                    AppUtils.showDialogError(requireContext())
                 }
             }
 
@@ -167,22 +171,6 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         }, 500, 2500)
     }
 
-    private fun showDialogError() {
-        val builder: AlertDialog.Builder = AlertDialog.Builder(requireContext())
-        builder
-            .setMessage("Sorry! Unable to download data. Please check your network connection or try again later.")
-            .setTitle("Error!!!")
-            .setPositiveButton("Wait") { dialog, _ ->
-                dialog.cancel()
-            }
-            .setNegativeButton("Close app") { _, _ ->
-                android.os.Process.killProcess(android.os.Process.myPid())
-
-            }
-        val dialog: AlertDialog = builder.create()
-        dialog.show()
-    }
-
     private fun setCustomSpinner(list: List<CustomSpinnerAdapter.Category>) {
         val customSpinnerAdapter = CustomSpinnerAdapter(
             requireContext(),
@@ -201,7 +189,9 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                 position: Int,
                 id: Long
             ) {
-                homeViewModel.getMoviesWithGenre(listGenres[position].id)
+                listGenres?.let {
+                    homeViewModel.getMoviesWithGenre(it[position].id)
+                }
             }
 
             override fun onNothingSelected(parent: AdapterView<*>?) {

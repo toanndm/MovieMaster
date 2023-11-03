@@ -1,9 +1,11 @@
 package com.example.movieinfomation.ui.viewmodels
 
 import android.content.pm.ModuleInfo
+import android.text.BoringLayout
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.movieinfomation.models.Genre
 import com.example.movieinfomation.models.Genres
 import com.example.movieinfomation.models.MovieResponse
 import com.example.movieinfomation.other.ApiKey
@@ -20,6 +22,11 @@ class HomeViewModel @Inject constructor(private val repository: HomeRepository):
     var moviesWithGenre = MutableLiveData<NetWorkResult<MovieResponse>>()
     var moviesTrendingDay = MutableLiveData<NetWorkResult<MovieResponse>>()
     var moviesNowPlaying = MutableLiveData<NetWorkResult<MovieResponse>>()
+    var moviesSearch = MutableLiveData<NetWorkResult<MovieResponse>>()
+    var query = MutableLiveData<String>("")
+    var isSearching = MutableLiveData<Boolean>()
+    var idToGenre: Map<Int, String>? = null
+    var isF1 = false
 
     init {
         getGenres()
@@ -28,6 +35,24 @@ class HomeViewModel @Inject constructor(private val repository: HomeRepository):
         getMoviesTrending()
         getMoviesNowPlaying()
     }
+
+    fun getMoviesSearch(query: String) {
+        moviesSearch.postValue(NetWorkResult.Loading<MovieResponse>())
+        try {
+            viewModelScope.launch {
+                val response = repository.getMovieBySearch(ApiKey.getApiKey(), query)
+                if (response.isSuccessful) {
+                    moviesSearch.postValue(NetWorkResult.Success<MovieResponse>(response.body()))
+                } else {
+                    moviesSearch.postValue(NetWorkResult.Error<MovieResponse>("Network error!!!"))
+                }
+            }
+
+        } catch (e: Exception) {
+            moviesSearch.postValue(NetWorkResult.Error<MovieResponse>(e.message))
+        }
+    }
+
 
     fun getMoviesWithGenre(genre: Int = 27) {
         moviesWithGenre.postValue(NetWorkResult.Loading<MovieResponse>())
@@ -53,6 +78,7 @@ class HomeViewModel @Inject constructor(private val repository: HomeRepository):
                 val response = repository.getGenres(ApiKey.getApiKey())
                 if (response.isSuccessful) {
                     genresResponse.postValue(NetWorkResult.Success<Genres>(response.body()))
+                    idToGenre = response.body()!!.genres.associateBy(Genre::id, Genre::name)
                 } else {
                     genresResponse.postValue(NetWorkResult.Error<Genres>("Network error!!!"))
                 }

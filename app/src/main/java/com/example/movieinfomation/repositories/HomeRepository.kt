@@ -25,5 +25,8 @@ class HomeRepository @Inject constructor(private val apiService: ApiService) {
         apiKey: String
     ) = apiService.getNowPlaying(apiKey)
 
-
+    suspend fun getMovieBySearch(
+        apiKey: String,
+        query: String
+    ) = apiService.getMovieBySearch(apiKey, query)
 }

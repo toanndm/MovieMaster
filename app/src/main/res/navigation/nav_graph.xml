@@ -3,47 +3,49 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/homeFragment">
+    app:startDestination="@id/splashFragment">
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.example.movieinfomation.ui.fragments.HomeFragment"
         android:label="HomeFragment" >
         <action
-            android:id="@+id/action_homeFragment_to_searchFragment"
-            app:destination="@id/searchFragment" />
-        <action
             android:id="@+id/action_homeFragment_to_accountFragment"
             app:destination="@id/accountFragment" />
         <action
+            android:id="@+id/action_homeFragment_to_searchFragment"
+            app:destination="@id/searchFragment" />
+        <action
             android:id="@+id/action_homeFragment_to_movieDetailFragment"
             app:destination="@id/movieDetailFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_allMovieFragment"
+            app:destination="@id/allMovieFragment" />
     </fragment>
     <fragment
         android:id="@+id/accountFragment"
         android:name="com.example.movieinfomation.ui.fragments.AccountFragment"
-        android:label="AccountFragment" />
+        android:label="AccountFragment" >
+        <action
+            android:id="@+id/action_accountFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
+        <action
+            android:id="@+id/action_accountFragment_to_searchFragment"
+            app:destination="@id/searchFragment" />
+        <action
+            android:id="@+id/action_accountFragment_to_movieDetailFragment"
+            app:destination="@id/movieDetailFragment" />
+        <action
+            android:id="@+id/action_accountFragment_to_allMovieFragment"
+            app:destination="@id/allMovieFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/allMovieFragment"
+        android:name="com.example.movieinfomation.ui.fragments.AllMovieFragment"
+        android:label="AllMovieFragment" />
     <fragment
         android:id="@+id/movieDetailFragment"
         android:name="com.example.movieinfomation.ui.fragments.MovieDetailFragment"
-        android:label="MovieDetailFragment" >
-        <action
-            android:id="@+id/action_movieDetailFragment_to_movieStreamingFragment"
-            app:destination="@id/movieStreamingFragment" />
-        <action
-            android:id="@+id/action_movieDetailFragment_to_searchFragment"
-            app:destination="@id/searchFragment" />
-        <action
-            android:id="@+id/action_movieDetailFragment_to_homeFragment"
-            app:destination="@id/homeFragment" />
-    </fragment>
-    <fragment
-        android:id="@+id/movieStreamingFragment"
-        android:name="com.example.movieinfomation.ui.fragments.MovieStreamingFragment"
-        android:label="MovieStreamingFragment" >
-        <action
-            android:id="@+id/action_movieStreamingFragment_to_movieDetailFragment"
-            app:destination="@id/movieDetailFragment" />
-    </fragment>
+        android:label="MovieDetailFragment" />
     <fragment
         android:id="@+id/searchFragment"
         android:name="com.example.movieinfomation.ui.fragments.SearchFragment"
@@ -55,7 +57,18 @@
             android:id="@+id/action_searchFragment_to_accountFragment"
             app:destination="@id/accountFragment" />
         <action
+            android:id="@+id/action_searchFragment_to_allMovieFragment"
+            app:destination="@id/allMovieFragment" />
+        <action
             android:id="@+id/action_searchFragment_to_movieDetailFragment"
             app:destination="@id/movieDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/splashFragment"
+        android:name="com.example.movieinfomation.ui.fragments.SplashFragment"
+        android:label="SplashFragment" >
+        <action
+            android:id="@+id/action_splashFragment_to_homeFragment"
+            app:destination="@id/homeFragment" />
     </fragment>
 </navigation>
