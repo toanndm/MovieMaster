@@ -44,7 +44,22 @@ class AllMovieFragment : Fragment(R.layout.fragment_all_movie) {
         super.onViewCreated(view, savedInstanceState)
         setRecycleView(homeViewModel.idToGenre!!)
         clickSearch()
+        setOnItemClick()
+        setOnClickBack()
         subscribeToObserve()
+    }
+
+    private fun setOnClickBack() {
+        binding.btnBack.setOnClickListener {
+            requireActivity().onBackPressedDispatcher.onBackPressed()
+        }
+    }
+
+    private fun setOnItemClick() {
+        movieAdapter.setOnItemClickListener {
+            homeViewModel.getMovieDetail(it.id)
+            findNavController().navigate(R.id.action_allMovieFragment_to_movieDetailFragment)
+        }
     }
 
     private fun clickSearch() {

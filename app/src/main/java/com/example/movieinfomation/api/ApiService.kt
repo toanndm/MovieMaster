@@ -1,6 +1,7 @@
 package com.example.movieinfomation.api
 
 import com.example.movieinfomation.models.Genres
+import com.example.movieinfomation.models.MovieDetail
 import com.example.movieinfomation.models.MovieResponse
 import retrofit2.Response
 import retrofit2.http.GET
@@ -54,5 +55,13 @@ interface ApiService {
         @Query("page")
         page: Int
     ): Response<MovieResponse>
+
+    @GET("movie/{movie_id}")
+    suspend fun getMovieDetail(
+        @Path("movie_id")
+        movieId: Int,
+        @Query("api_key")
+        apiKey: String
+    ): Response<MovieDetail>
 
 }

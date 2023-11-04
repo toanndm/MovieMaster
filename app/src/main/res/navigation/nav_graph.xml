@@ -41,7 +41,11 @@
     <fragment
         android:id="@+id/allMovieFragment"
         android:name="com.example.movieinfomation.ui.fragments.AllMovieFragment"
-        android:label="AllMovieFragment" />
+        android:label="AllMovieFragment" >
+        <action
+            android:id="@+id/action_allMovieFragment_to_movieDetailFragment"
+            app:destination="@id/movieDetailFragment" />
+    </fragment>
     <fragment
         android:id="@+id/movieDetailFragment"
         android:name="com.example.movieinfomation.ui.fragments.MovieDetailFragment"

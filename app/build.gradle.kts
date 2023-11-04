@@ -65,6 +65,7 @@ dependencies {
     implementation("androidx.navigation:navigation-ui-ktx:2.7.4")
     //Glide
     implementation ("com.github.bumptech.glide:glide:4.16.0")
+    implementation ("jp.wasabeef:glide-transformations:4.3.0")
     //Viewpager2
     implementation("androidx.viewpager2:viewpager2:1.0.0")
     //CircleIndicator
@@ -77,7 +78,6 @@ dependencies {
     //Retrofit
     implementation ("com.squareup.retrofit2:retrofit:2.9.0")
     implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
-    //Coroutines
 }
 
 kapt {

@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.movieinfomation.R
 import com.example.movieinfomation.models.Movie
+import com.google.android.material.animation.AnimatableView.Listener
 
 class MovieRecyclerAdapter(
     private val list: List<Movie>,
@@ -20,6 +21,12 @@ class MovieRecyclerAdapter(
         val tvTitle: TextView = itemView.findViewById(R.id.tvTitle1)
         val tvDate: TextView = itemView.findViewById(R.id.tvDate1)
         val tvRate: TextView = itemView.findViewById(R.id.tvRate1)
+    }
+
+    private var onItemClickListener: ((Movie) -> Unit)? = null
+
+    fun setOnItemClickListener(listener: (Movie) -> Unit) {
+        onItemClickListener = listener
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -41,5 +48,11 @@ class MovieRecyclerAdapter(
         holder.tvRate.text = list[position].voteAverage.toString()
         holder.tvTitle.text = list[position].title
         holder.tvDate.text = list[position].releaseDate
+
+        holder.itemView.setOnClickListener {
+            onItemClickListener?.let {
+                it(list[position])
+            }
+        }
     }
 }

@@ -1,18 +1,213 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@color/dark"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:background="@color/dark">
+    android:layout_height="match_parent">
 
-    <TextView
-        android:text="movie detail"
-        android:textSize="50sp"
+    <ImageView
+        android:id="@+id/imgBackdrop"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        android:alpha="0.3"
+        android:src="@drawable/not_available"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tvTitle3"
+        android:text="MOVIE"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        android:textSize="24sp"
+        android:fontFamily="sans-serif"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="30dp"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnBack1"
+        app:icon="@drawable/baseline_arrow_back_ios_24"
+        app:iconTint="@color/white"
+        android:backgroundTint="@android:color/transparent"
+        app:layout_constraintTop_toTopOf="@id/tvTitle3"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/tvTitle3"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/imgPosterCtn"
+        android:layout_marginTop="20dp"
+        app:cardCornerRadius="20dp"
+        android:backgroundTint="@android:color/transparent"
+        app:layout_constraintTop_toBottomOf="@id/tvTitle3"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/imgPoster3"
+            android:alpha="0.8"
+            android:layout_width="230dp"
+            android:layout_height="320dp"/>
+    </androidx.cardview.widget.CardView>
+
+
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tvYear"
+        android:text="2023"
+        android:textSize="18sp"
+        android:textColor="@color/grey"
+        app:layout_constraintTop_toTopOf="@id/tvRunTime"
+        app:layout_constraintBottom_toBottomOf="@id/tvRunTime"
+        app:layout_constraintEnd_toStartOf="@id/tvRunTime"
+        android:drawableLeft="@drawable/baseline_calendar_today_24"
+        android:drawableTint="@color/grey"
+        android:layout_marginEnd="10dp"
+        android:drawablePadding="5dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tvRunTime"
+        android:text="140 Minutes"
+        android:textSize="18sp"
+        android:textColor="@color/grey"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/imgPosterCtn"
+        android:layout_marginTop="10dp"
+        android:drawableLeft="@drawable/baseline_access_time_filled_24"
+        android:drawableTint="@color/grey"
+        android:drawablePadding="5dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tvGenre"
+        android:text="Action"
+        android:textSize="18sp"
+        android:textColor="@color/grey"
+        app:layout_constraintStart_toEndOf="@id/tvRunTime"
+        app:layout_constraintTop_toTopOf="@id/tvRunTime"
+        android:layout_marginStart="10dp"
+        android:drawableLeft="@drawable/baseline_local_movies_24"
+        android:drawableTint="@color/grey"
+        android:drawablePadding="5dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tvRate3"
+        android:text="5.0"
+        android:textSize="18sp"
+        android:textColor="@color/orange"
+        app:layout_constraintTop_toBottomOf="@id/tvRunTime"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:drawableLeft="@drawable/star_rate_24"
+        android:drawablePadding="5dp"
+        android:layout_marginTop="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnPlay"
+        app:cornerRadius="20dp"
+        android:backgroundTint="@color/orange"
+        app:layout_constraintTop_toBottomOf="@id/tvRate3"
+        app:layout_constraintEnd_toStartOf="@id/guiline"
+        app:icon="@drawable/baseline_play_arrow_24"
+        app:iconGravity="start"
+        app:iconTint="@color/white"
+        android:text="Play"
+        android:textColor="@color/white"
+        android:layout_marginTop="20dp"
+        android:layout_marginEnd="10dp"
+        android:textStyle="bold"
+        android:textSize="18sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btnOpenLink"
+        android:drawableLeft="@drawable/baseline_open_in_new_24"
+        android:drawableTint="@color/white"
+        android:text="Website"
+        app:cornerRadius="20dp"
+        android:backgroundTint="@color/orange"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        android:drawablePadding="20dp"
+        android:layout_marginStart="10dp"
+        app:layout_constraintTop_toTopOf="@id/btnPlay"
+        app:layout_constraintBottom_toBottomOf="@id/btnPlay"
+        app:layout_constraintStart_toEndOf="@id/guiline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tvNotification"
+        android:text="Sorry, this movie doesn't have a video."
+        app:layout_constraintTop_toBottomOf="@id/btnPlay"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:visibility="gone"
+        android:textColor="@color/grey"
+        android:textSize="16sp"
+        android:textStyle="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tvOverView"
+        android:text="Story Line"
+        android:textStyle="bold"
+        android:textColor="@color/white"
+        android:textSize="18sp"
+        android:fontFamily="sans-serif"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tvNotification"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="20dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tvContent"
+        app:layout_constraintTop_toBottomOf="@id/tvOverView"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="20dp"
+        android:fontFamily="sans-serif"
+        android:text="@string/string"
+        android:textSize="16sp"
+        android:textColor="@color/white_grey"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"/>
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guiline"
+        android:orientation="vertical"
+        app:layout_constraintGuide_percent="0.5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <ProgressBar
+        android:id="@+id/progressBarDetail"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 

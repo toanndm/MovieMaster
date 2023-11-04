@@ -12,8 +12,11 @@ import androidx.recyclerview.widget.AsyncListDiffer
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.example.movieinfomation.R
 import com.example.movieinfomation.models.Movie
+import com.google.android.material.animation.AnimatableView.Listener
+import jp.wasabeef.glide.transformations.BlurTransformation
 
 class AllMovieAdapter(
     private val idToName: Map<Int, String>,
@@ -40,13 +43,16 @@ class AllMovieAdapter(
 
     val differ = AsyncListDiffer(this, differCallback)
 
+    private var onItemClickListener: ((Movie) -> Unit)? = null
+
+    fun setOnItemClickListener(listener: (Movie) -> Unit) {
+        onItemClickListener = listener
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): AllMovieViewHolder{
         val view = LayoutInflater.from(parent.context).inflate(R.layout.all_movie_item, parent, false)
         return AllMovieViewHolder(view)
     }
-
-
-
 
     override fun onBindViewHolder(holder: AllMovieViewHolder, position: Int) {
         val movie = differ.currentList[position]
@@ -70,6 +76,12 @@ class AllMovieAdapter(
             }
         }
         holder.tvGenres.text = textGenres
+        holder.itemView.setOnClickListener {
+            onItemClickListener?.let {
+                it(movie)
+            }
+
+        }
     }
 
     override fun getItemCount(): Int {

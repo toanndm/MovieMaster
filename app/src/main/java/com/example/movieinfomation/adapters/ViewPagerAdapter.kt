@@ -24,6 +24,11 @@ class ViewPagerAdapter(private val movies: List<Movie>,
         val tvDate: TextView = itemView.findViewById(R.id.tvReleaseDate)
     }
 
+    private var onItemClickListener: ((Movie) -> Unit)? = null
+    fun setOnItemClickListener(listener: (Movie) -> Unit) {
+        onItemClickListener = listener
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PopularMovieViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_viewpager, parent, false)
         return PopularMovieViewHolder(view)
@@ -42,5 +47,10 @@ class ViewPagerAdapter(private val movies: List<Movie>,
             .into(holder.imgView)
         holder.tvTitle.text = movies[position].title
         holder.tvDate.text = movies[position].releaseDate
+        holder.itemView.setOnClickListener {
+            onItemClickListener?.let {
+                it(movies[position])
+            }
+        }
     }
 }

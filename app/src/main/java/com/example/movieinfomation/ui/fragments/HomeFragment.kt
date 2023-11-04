@@ -122,8 +122,13 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     }
 
     private fun setRecycleView(list: List<Movie>) {
+        val rcvAdapter = MovieRecyclerAdapter(list, requireContext())
+        rcvAdapter.setOnItemClickListener {
+            homeViewModel.getMovieDetail(it.id)
+            findNavController().navigate(R.id.action_homeFragment_to_movieDetailFragment)
+        }
         binding.rcvCategorizedMovie.apply {
-            adapter = MovieRecyclerAdapter(list, requireContext())
+            adapter = rcvAdapter
             layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         }
 
@@ -131,6 +136,10 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
     private fun setViewPager(list: List<Movie>) {
         val adapter = ViewPagerAdapter(list, requireContext())
+        adapter.setOnItemClickListener {
+            homeViewModel.getMovieDetail(it.id)
+            findNavController().navigate(R.id.action_homeFragment_to_movieDetailFragment)
+        }
         binding.viewpagerPopularMovie.adapter = adapter
         val compositePageTransformer = CompositePageTransformer().apply {
             addTransformer(MarginPageTransformer(40))

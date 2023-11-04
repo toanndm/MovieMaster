@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.movieinfomation.models.Genre
 import com.example.movieinfomation.models.Genres
+import com.example.movieinfomation.models.MovieDetail
 import com.example.movieinfomation.models.MovieResponse
 import com.example.movieinfomation.other.ApiKey
 import com.example.movieinfomation.other.NetWorkResult
@@ -35,12 +36,31 @@ class HomeViewModel @Inject constructor(private val repository: HomeRepository):
     var allMovies = MutableLiveData<NetWorkResult<MovieResponse>>()
     var allMoviesPage = 0
 
+    var movieDetail = MutableLiveData<NetWorkResult<MovieDetail>>()
+
     init {
         getGenres()
         getPopularToday()
         getMoviesWithGenre()
         getMoviesTrending()
         getMoviesNowPlaying()
+    }
+
+    fun getMovieDetail(id: Int) {
+        movieDetail.postValue(NetWorkResult.Loading<MovieDetail>())
+        try {
+            viewModelScope.launch {
+                val response = repository.getMovieDetail(id, ApiKey.getApiKey())
+                if (response.isSuccessful) {
+                    movieDetail.postValue(NetWorkResult.Success<MovieDetail>(response.body()))
+                } else {
+                    movieDetail.postValue(NetWorkResult.Error<MovieDetail>("Network error!!!"))
+                }
+            }
+
+        } catch (e: Exception) {
+            movieDetail.postValue(NetWorkResult.Error<MovieDetail>(e.message))
+        }
     }
 
     fun getAllMovies() {
