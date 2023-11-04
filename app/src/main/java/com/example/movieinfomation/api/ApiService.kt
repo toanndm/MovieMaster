@@ -47,4 +47,12 @@ interface ApiService {
         page: Int
     ): Response<MovieResponse>
 
+    @GET("discover/movie")
+    suspend fun getAllMovies(
+        @Query("api_key")
+        apiKey: String,
+        @Query("page")
+        page: Int
+    ): Response<MovieResponse>
+
 }

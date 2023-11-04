@@ -32,12 +32,33 @@ class HomeViewModel @Inject constructor(private val repository: HomeRepository):
     var isSearching = MutableLiveData<Boolean>()
     var idToGenre: Map<Int, String>? = null
 
+    var allMovies = MutableLiveData<NetWorkResult<MovieResponse>>()
+    var allMoviesPage = 0
+
     init {
         getGenres()
         getPopularToday()
         getMoviesWithGenre()
         getMoviesTrending()
         getMoviesNowPlaying()
+    }
+
+    fun getAllMovies() {
+        allMoviesPage++
+        allMovies.postValue(NetWorkResult.Loading<MovieResponse>())
+        try {
+            viewModelScope.launch {
+                val response = repository.getAllMovies(ApiKey.getApiKey(), allMoviesPage)
+                if (response.isSuccessful) {
+                    allMovies.postValue(NetWorkResult.Success<MovieResponse>(response.body()))
+                } else {
+                    allMovies.postValue(NetWorkResult.Error<MovieResponse>("Network error!!!"))
+                }
+            }
+
+        } catch (e: Exception) {
+            allMovies.postValue(NetWorkResult.Error<MovieResponse>(e.message))
+        }
     }
 
     fun getMoviesSearch(query: String) {

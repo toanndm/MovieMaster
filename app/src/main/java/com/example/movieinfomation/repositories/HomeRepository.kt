@@ -30,4 +30,9 @@ class HomeRepository @Inject constructor(private val apiService: ApiService) {
         query: String,
         page: Int
     ) = apiService.getMovieBySearch(apiKey, query, page)
+
+    suspend fun getAllMovies(
+       apiKey: String,
+       page: Int
+    ) = apiService.getAllMovies(apiKey, page)
 }

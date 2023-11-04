@@ -14,6 +14,7 @@ import androidx.core.view.get
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.CompositePageTransformer
 import androidx.viewpager2.widget.MarginPageTransformer
@@ -54,6 +55,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         super.onViewCreated(view, savedInstanceState)
         subscribeToObserve()
         selectSpinner()
+        clickSeeAll()
     }
 
 
@@ -109,6 +111,14 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             }
 
         })
+    }
+
+    private fun clickSeeAll() {
+        binding.tvSeeAllCategories.setOnClickListener {
+            homeViewModel.getAllMovies()
+            homeViewModel.isSearching.value = false
+            findNavController().navigate(R.id.action_homeFragment_to_allMovieFragment)
+        }
     }
 
     private fun setRecycleView(list: List<Movie>) {

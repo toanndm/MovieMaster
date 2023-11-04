@@ -105,9 +105,9 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
     private fun completeSearch() {
         binding.edtSearch.setOnEditorActionListener(TextView.OnEditorActionListener { view, actionId, _ ->
             if(actionId == EditorInfo.IME_ACTION_DONE) {
-                if (view.text != "") {
-                    homeViewModel.query.value = view.text.toString()
+                if (view.text.isNotEmpty()) {
                     homeViewModel.isSearching.value = true
+                    homeViewModel.query.value = view.text.toString()
                     findNavController().navigate(R.id.action_searchFragment_to_allMovieFragment)
                 }
             }
@@ -117,6 +117,7 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
 
     private fun clickSeeAll() {
         binding.tvSeeAll.setOnClickListener {
+            homeViewModel.getAllMovies()
             homeViewModel.isSearching.value = false
             findNavController().navigate(R.id.action_searchFragment_to_allMovieFragment)
         }

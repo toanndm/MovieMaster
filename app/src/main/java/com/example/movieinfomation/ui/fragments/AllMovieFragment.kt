@@ -50,7 +50,7 @@ class AllMovieFragment : Fragment(R.layout.fragment_all_movie) {
     private fun clickSearch() {
         binding.edtSearch1.setOnEditorActionListener(TextView.OnEditorActionListener { view, actionId, _ ->
             if(actionId == EditorInfo.IME_ACTION_DONE) {
-                if (view.text != "") {
+                if (view.text.isNotEmpty()) {
                     homeViewModel.query.value = view.text.toString()
                     homeViewModel.isSearching.value = true
                 }
@@ -87,7 +87,12 @@ class AllMovieFragment : Fragment(R.layout.fragment_all_movie) {
                     isTotalMoreThanVisible && isScrolling
 
             if (shouldPaginate) {
-                homeViewModel.getMoviesSearch(homeViewModel.query.value!!)
+                if (homeViewModel.isSearching.value == true) {
+                    homeViewModel.getMoviesSearch(homeViewModel.query.value!!)
+                } else {
+                    homeViewModel.getAllMovies()
+                }
+
                 isScrolling = false
             }
         }
@@ -102,10 +107,30 @@ class AllMovieFragment : Fragment(R.layout.fragment_all_movie) {
         })
 
         homeViewModel.isSearching.observe(viewLifecycleOwner, Observer { isSearching ->
+            listMovie = mutableListOf()
             if (isSearching) {
                 binding.tvSearchResult.visibility = View.VISIBLE
             } else {
                 binding.tvSearchResult.visibility = View.GONE
+            }
+        })
+
+        homeViewModel.allMovies.observe(viewLifecycleOwner, Observer {response ->
+            when (response) {
+                is NetWorkResult.Success -> {
+                    response.data?.let {
+                        hideProgressBar()
+                        val list = it.movieItems
+                        listMovie.addAll(list)
+                        movieAdapter.differ.submitList(listMovie.toList())
+                    }
+                }
+                is NetWorkResult.Loading -> {
+                    showProgressBar()
+                }
+                is NetWorkResult.Error -> {
+                    AppUtils.showDialogError(requireContext())
+                }
             }
         })
 
@@ -155,6 +180,15 @@ class AllMovieFragment : Fragment(R.layout.fragment_all_movie) {
         super.onPause()
         homeViewModel.query.value = ""
         homeViewModel.searchPage = 0
+        homeViewModel.allMoviesPage = 0
+        listMovie = mutableListOf()
+    }
+
+    override fun onStop() {
+        super.onStop()
+        homeViewModel.query.value = ""
+        homeViewModel.searchPage = 0
+        homeViewModel.allMoviesPage = 0
         listMovie = mutableListOf()
     }
 }
