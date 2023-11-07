@@ -43,7 +43,7 @@ class MovieDetailFragment : Fragment(R.layout.fragment_movie_detail) {
     private fun clickWebsite() {
         binding.btnOpenLink.setOnClickListener {
             movieDetail?.let {
-                val url = it.homePage
+                val url = "https://www.themoviedb.org/movie/" + it.id
                 val uri = Uri.parse(url)
                 startActivity(Intent(Intent.ACTION_VIEW, uri))
             }

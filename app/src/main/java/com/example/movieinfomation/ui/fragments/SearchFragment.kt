@@ -88,15 +88,25 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
     }
 
     private fun setRecycleViewRcm(list: MutableList<Movie>) {
+        val rcmAdapter = MovieRecyclerAdapter(list, requireContext())
+        rcmAdapter.setOnItemClickListener {
+            homeViewModel.getMovieDetail(it.id)
+            findNavController().navigate(R.id.action_searchFragment_to_movieDetailFragment)
+        }
         binding.rcvRecommend.apply {
-            adapter = MovieRecyclerAdapter(list, requireContext())
+            adapter = rcmAdapter
             layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         }
     }
 
     private fun setRecycleView(list: List<Movie>) {
+        val rcvAdapter = MovieRecyclerAdapter(list, requireContext())
+        rcvAdapter.setOnItemClickListener {
+            homeViewModel.getMovieDetail(it.id)
+            findNavController().navigate(R.id.action_searchFragment_to_movieDetailFragment)
+        }
         binding.rcvTrending.apply {
-            adapter = MovieRecyclerAdapter(list, requireContext())
+            adapter = rcvAdapter
             layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
         }
 
