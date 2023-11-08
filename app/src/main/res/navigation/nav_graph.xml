@@ -49,7 +49,11 @@
     <fragment
         android:id="@+id/movieDetailFragment"
         android:name="com.example.movieinfomation.ui.fragments.MovieDetailFragment"
-        android:label="MovieDetailFragment" />
+        android:label="MovieDetailFragment" >
+        <action
+            android:id="@+id/action_movieDetailFragment_to_playTrailerFragment"
+            app:destination="@id/playTrailerFragment" />
+    </fragment>
     <fragment
         android:id="@+id/searchFragment"
         android:name="com.example.movieinfomation.ui.fragments.SearchFragment"
@@ -74,5 +78,13 @@
         <action
             android:id="@+id/action_splashFragment_to_homeFragment"
             app:destination="@id/homeFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/playTrailerFragment"
+        android:name="com.example.movieinfomation.ui.fragments.PlayTrailerFragment"
+        android:label="PlayTrailerFragment" >
+        <action
+            android:id="@+id/action_playTrailerFragment_to_movieDetailFragment"
+            app:destination="@id/movieDetailFragment" />
     </fragment>
 </navigation>

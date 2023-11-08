@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Observer
+import androidx.navigation.fragment.findNavController
 import com.bumptech.glide.Glide
 import com.example.movieinfomation.R
 import com.example.movieinfomation.databinding.FragmentMovieDetailBinding
@@ -53,14 +54,9 @@ class MovieDetailFragment : Fragment(R.layout.fragment_movie_detail) {
     private fun clickPlay() {
         binding.btnPlay.setOnClickListener {
             movieDetail?.let {
-                if (it.hasVideo) {
-                    binding.tvNotification.text =
-                        "Sorry, this feature Sorry, this feature is currently under development and may not be fully functional."
-
-                } else {
-                    binding.tvNotification.text = "Sorry, this movie doesn't have a video."
-                }
-                binding.tvNotification.visibility = View.VISIBLE
+                homeViewModel.getMoviesSimilar(it.id)
+                homeViewModel.getMovieVideos(it.id)
+                findNavController().navigate(R.id.action_movieDetailFragment_to_playTrailerFragment)
             }
         }
 
@@ -68,7 +64,15 @@ class MovieDetailFragment : Fragment(R.layout.fragment_movie_detail) {
 
     private fun clickBack() {
         binding.btnBack1.setOnClickListener {
-            requireActivity().onBackPressedDispatcher.onBackPressed()
+            val size = homeViewModel.listMovieBackStack.size
+            if (size > 1) {
+                homeViewModel.getMovieDetail(homeViewModel.listMovieBackStack[size - 2])
+                homeViewModel.getMovieVideos(homeViewModel.listMovieBackStack[size - 2])
+                Timber.tag("test stack").d("-2 " + homeViewModel.listMovieBackStack[size - 2].toString())
+            }
+            homeViewModel.popBackStack()
+            findNavController().popBackStack()
+            Timber.tag("test stack").d("move to play and"+homeViewModel.listMovieBackStack.toString())
         }
     }
 
@@ -78,6 +82,9 @@ class MovieDetailFragment : Fragment(R.layout.fragment_movie_detail) {
                 is NetWorkResult.Success -> {
                     response.data?.let {
                         movieDetail = it
+                        if (homeViewModel.listMovieBackStack.isEmpty()) {
+                            homeViewModel.listMovieBackStack.add(it.id)
+                        }
                         hideProgressBar()
                         bindData(it)
                     }

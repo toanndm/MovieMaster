@@ -7,6 +7,7 @@ import com.example.movieinfomation.models.Genre
 import com.example.movieinfomation.models.Genres
 import com.example.movieinfomation.models.MovieDetail
 import com.example.movieinfomation.models.MovieResponse
+import com.example.movieinfomation.models.VideoResponse
 import com.example.movieinfomation.other.ApiKey
 import com.example.movieinfomation.other.NetWorkResult
 import com.example.movieinfomation.repositories.HomeRepository
@@ -38,12 +39,59 @@ class HomeViewModel @Inject constructor(private val repository: HomeRepository):
 
     var movieDetail = MutableLiveData<NetWorkResult<MovieDetail>>()
 
+    var moviesSimilar = MutableLiveData<NetWorkResult<MovieResponse>>()
+
+    var movieVideos = MutableLiveData<NetWorkResult<VideoResponse>>()
+    var movieTitle = MutableLiveData<String>()
+    var listMovieBackStack: MutableList<Int> = mutableListOf()
+
     init {
         getGenres()
         getPopularToday()
         getMoviesWithGenre()
         getMoviesTrending()
         getMoviesNowPlaying()
+    }
+
+    fun popBackStack() {
+        if (listMovieBackStack.isNotEmpty()) {
+            val pos = listMovieBackStack.size - 1
+            listMovieBackStack.removeAt(pos)
+        }
+    }
+
+    fun getMovieVideos(id: Int) {
+        movieVideos.postValue(NetWorkResult.Loading<VideoResponse>())
+        try {
+            viewModelScope.launch {
+                val response = repository.getVideos(id, ApiKey.getApiKey())
+                if (response.isSuccessful) {
+                    movieVideos.postValue(NetWorkResult.Success<VideoResponse>(response.body()))
+                } else {
+                    movieVideos.postValue(NetWorkResult.Error<VideoResponse>("Network error!!!"))
+                }
+            }
+
+        } catch (e: Exception) {
+            movieVideos.postValue(NetWorkResult.Error<VideoResponse>(e.message))
+        }
+    }
+
+    fun getMoviesSimilar(id: Int) {
+        moviesSimilar.postValue(NetWorkResult.Loading<MovieResponse>())
+        try {
+            viewModelScope.launch {
+                val response = repository.getMoviesSimilar(id, ApiKey.getApiKey())
+                if (response.isSuccessful) {
+                    moviesSimilar.postValue(NetWorkResult.Success<MovieResponse>(response.body()))
+                } else {
+                    moviesSimilar.postValue(NetWorkResult.Error<MovieResponse>("Network error!!!"))
+                }
+            }
+
+        } catch (e: Exception) {
+            moviesSimilar.postValue(NetWorkResult.Error<MovieResponse>(e.message))
+        }
     }
 
     fun getMovieDetail(id: Int) {
@@ -53,6 +101,7 @@ class HomeViewModel @Inject constructor(private val repository: HomeRepository):
                 val response = repository.getMovieDetail(id, ApiKey.getApiKey())
                 if (response.isSuccessful) {
                     movieDetail.postValue(NetWorkResult.Success<MovieDetail>(response.body()))
+                    movieTitle.postValue(response.body()?.title)
                 } else {
                     movieDetail.postValue(NetWorkResult.Error<MovieDetail>("Network error!!!"))
                 }

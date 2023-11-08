@@ -40,4 +40,14 @@ class HomeRepository @Inject constructor(private val apiService: ApiService) {
         movieId: Int,
         apiKey: String
     ) = apiService.getMovieDetail(movieId, apiKey)
+
+    suspend fun getMoviesSimilar(
+        movieId: Int,
+        apiKey: String
+    ) = apiService.getMoviesSimilar(movieId, apiKey)
+
+    suspend fun getVideos(
+        movieId: Int,
+        apiKey: String
+    ) = apiService.getVideos(movieId, apiKey)
 }

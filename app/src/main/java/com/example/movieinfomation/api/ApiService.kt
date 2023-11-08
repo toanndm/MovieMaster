@@ -3,6 +3,7 @@ package com.example.movieinfomation.api
 import com.example.movieinfomation.models.Genres
 import com.example.movieinfomation.models.MovieDetail
 import com.example.movieinfomation.models.MovieResponse
+import com.example.movieinfomation.models.VideoResponse
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.PATCH
@@ -64,4 +65,19 @@ interface ApiService {
         apiKey: String
     ): Response<MovieDetail>
 
+    @GET("movie/{movie_id}/similar")
+    suspend fun getMoviesSimilar(
+        @Path("movie_id")
+        movieId: Int,
+        @Query("api_key")
+        apiKey: String
+    ): Response<MovieResponse>
+
+    @GET("movie/{movie_id}/videos")
+    suspend fun getVideos(
+        @Path("movie_id")
+        movieId: Int,
+        @Query("api_key")
+        apiKey: String
+    ): Response<VideoResponse>
 }
