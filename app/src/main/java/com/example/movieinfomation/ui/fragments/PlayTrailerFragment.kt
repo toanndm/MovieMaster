@@ -107,7 +107,6 @@ class PlayTrailerFragment: Fragment(R.layout.fragment_play_trailer) {
         binding.btnBackYoutube.setOnClickListener {
             homeViewModel.getMovieDetail(homeViewModel.listMovieBackStack[homeViewModel.listMovieBackStack.size - 1])
             findNavController().popBackStack()
-            Timber.tag("test stack").d("move to detail and "+ homeViewModel.listMovieBackStack.toString())
         }
     }
 

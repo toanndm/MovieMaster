@@ -68,11 +68,9 @@ class MovieDetailFragment : Fragment(R.layout.fragment_movie_detail) {
             if (size > 1) {
                 homeViewModel.getMovieDetail(homeViewModel.listMovieBackStack[size - 2])
                 homeViewModel.getMovieVideos(homeViewModel.listMovieBackStack[size - 2])
-                Timber.tag("test stack").d("-2 " + homeViewModel.listMovieBackStack[size - 2].toString())
             }
             homeViewModel.popBackStack()
             findNavController().popBackStack()
-            Timber.tag("test stack").d("move to play and"+homeViewModel.listMovieBackStack.toString())
         }
     }
 
