@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "600417493912",
+    "project_id": "moviemaster-7cd6a",
+    "storage_bucket": "moviemaster-7cd6a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:600417493912:android:bc5dfd3fba1f05a95c81ed",
+        "android_client_info": {
+          "package_name": "com.example.movieinfomation"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA-lCxk7dGf8WjvM8lafzIyTlfHWXivHII"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

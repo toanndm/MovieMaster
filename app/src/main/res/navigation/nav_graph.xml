@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/splashFragment">
+    app:startDestination="@id/loginFragment">
     <fragment
         android:id="@+id/homeFragment"
         android:name="com.example.movieinfomation.ui.fragments.HomeFragment"
@@ -86,5 +86,13 @@
         <action
             android:id="@+id/action_playTrailerFragment_to_movieDetailFragment"
             app:destination="@id/movieDetailFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/loginFragment"
+        android:name="com.example.movieinfomation.ui.fragments.LoginFragment"
+        android:label="LoginFragment" >
+        <action
+            android:id="@+id/action_loginFragment_to_splashFragment"
+            app:destination="@id/splashFragment" />
     </fragment>
 </navigation>
