@@ -7,6 +7,9 @@ import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.setupWithNavController
 import com.example.movieinfomation.R
 import com.example.movieinfomation.databinding.ActivityMainBinding
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
+import com.google.firebase.ktx.app
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -28,5 +31,10 @@ class MainActivity : AppCompatActivity() {
                 else -> binding.bottomNavigation.visibility = View.GONE
             }
         }
+    }
+
+    override fun onPause() {
+        super.onPause()
+        Firebase.auth.signOut()
     }
 }
