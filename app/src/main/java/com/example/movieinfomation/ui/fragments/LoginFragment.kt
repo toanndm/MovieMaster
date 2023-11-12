@@ -1,14 +1,23 @@
 package com.example.movieinfomation.ui.fragments
 
+import android.content.Context
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.InputMethodManager
+import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
+import androidx.lifecycle.Observer
+import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import com.example.movieinfomation.R
 import com.example.movieinfomation.databinding.FragmentLoginBinding
+import com.example.movieinfomation.other.AppUtils
+import com.example.movieinfomation.other.NetWorkResult
+import com.example.movieinfomation.ui.viewmodels.HomeViewModel
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.auth
 import com.google.firebase.auth.ktx.auth
@@ -19,6 +28,8 @@ import timber.log.Timber
 class LoginFragment: Fragment(R.layout.fragment_login) {
     private lateinit var binding: FragmentLoginBinding
     private lateinit var auth: FirebaseAuth
+    private val homeViewModel: HomeViewModel by activityViewModels()
+    private var countLoad = 0
     private var isSignIn = true
 
     override fun onCreateView(
@@ -44,6 +55,10 @@ class LoginFragment: Fragment(R.layout.fragment_login) {
         super.onViewCreated(view, savedInstanceState)
         clickTextViewNotification()
         clickSignUpButton()
+        binding.layoutContainer.setOnClickListener {
+            activity?.currentFocus?.clearFocus()
+            it.hideKeyBoard()
+        }
     }
 
     private fun clickSignUpButton() {
@@ -65,8 +80,7 @@ class LoginFragment: Fragment(R.layout.fragment_login) {
             auth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener {task ->
                     if (task.isSuccessful) {
-                        hideProgressBar()
-                        findNavController().navigate(R.id.action_loginFragment_to_splashFragment)
+                        fetchData()
                     } else {
                         Toast.makeText(requireContext(), task.exception.toString(), Toast.LENGTH_SHORT).show()
                     }
@@ -118,7 +132,8 @@ class LoginFragment: Fragment(R.layout.fragment_login) {
                     textView.visibility = View.GONE
                     button.text = "SIGN UP"
                     confirmPasswordLayout.visibility = View.VISIBLE
-                    binding.nameLayout.visibility = View.VISIBLE
+                    nameLayout.visibility = View.VISIBLE
+
                 }
                 isSignIn = false
             } else {
@@ -127,9 +142,71 @@ class LoginFragment: Fragment(R.layout.fragment_login) {
                     textView.visibility = View.VISIBLE
                     button.text = "SIGN IN"
                     confirmPasswordLayout.visibility = View.GONE
+                    nameLayout.visibility = View.GONE
                 }
                 isSignIn = true
             }
+            activity?.currentFocus?.clearFocus()
         }
     }
+
+    private fun fetchData() {
+        homeViewModel.moviesWithGenre.observe(viewLifecycleOwner, Observer {respone ->
+            when (respone) {
+                is NetWorkResult.Success -> {
+                    countLoad++
+                    navigateToHome()
+                }
+                is NetWorkResult.Loading -> {}
+                is NetWorkResult.Error -> {
+                    AppUtils.showDialogError(requireContext())
+                }
+            }
+        })
+
+        homeViewModel.genresResponse.observe(viewLifecycleOwner, Observer {respone ->
+            when (respone) {
+                is NetWorkResult.Success -> {
+                    countLoad++
+                    navigateToHome()
+                }
+                is NetWorkResult.Loading -> {}
+                is NetWorkResult.Error -> {
+                    AppUtils.showDialogError(requireContext())
+                }
+            }
+        })
+
+        homeViewModel.popularTodayResponse.observe(viewLifecycleOwner, Observer {respone ->
+            when (respone) {
+                is NetWorkResult.Success -> {
+                    countLoad++
+                    navigateToHome()
+                }
+                is NetWorkResult.Loading -> {}
+                is NetWorkResult.Error -> {
+                    AppUtils.showDialogError(requireContext())
+                }
+            }
+        })
+    }
+
+    private fun navigateToHome() {
+        if (countLoad == 3) {
+            val navOption = NavOptions.Builder()
+                .setPopUpTo(R.id.loginFragment, true)
+                .build()
+            findNavController().navigate(
+                R.id.action_loginFragment_to_homeFragment,
+                null,
+                navOption
+            )
+        }
+    }
+
+}
+
+private fun View.hideKeyBoard() {
+    val imm = context.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+    imm.hideSoftInputFromWindow(this.windowToken, 0)
 }

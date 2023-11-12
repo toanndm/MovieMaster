@@ -30,6 +30,8 @@ import com.example.movieinfomation.other.AppUtils
 import com.example.movieinfomation.other.NetWorkResult
 import com.example.movieinfomation.ui.viewmodels.HomeViewModel
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import dagger.hilt.android.AndroidEntryPoint
 import timber.log.Timber
 import java.util.Timer
@@ -56,6 +58,19 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         subscribeToObserve()
         selectSpinner()
         clickSeeAll()
+        bindDataOfUser()
+    }
+
+    private fun bindDataOfUser() {
+        val user = Firebase.auth.currentUser
+        user?.let {
+            val name = it.displayName
+            if (name != null) {
+                binding.tvAccount.text = "Hello, $name"
+            } else {
+                binding.tvAccount.text = "Hello"
+            }
+        }
     }
 
 
