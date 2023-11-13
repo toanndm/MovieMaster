@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.movieinfomation.models.Genre
 import com.example.movieinfomation.models.Genres
+import com.example.movieinfomation.models.Movie
 import com.example.movieinfomation.models.MovieDetail
 import com.example.movieinfomation.models.MovieResponse
 import com.example.movieinfomation.models.VideoResponse
@@ -44,6 +45,9 @@ class HomeViewModel @Inject constructor(private val repository: HomeRepository):
     var movieVideos = MutableLiveData<NetWorkResult<VideoResponse>>()
     var movieTitle = MutableLiveData<String>()
     var listMovieBackStack: MutableList<Int> = mutableListOf()
+
+    var userId = ""
+    var watchedMovies = MutableLiveData<MutableList<Movie>>()
 
     init {
         getGenres()
@@ -233,5 +237,14 @@ class HomeViewModel @Inject constructor(private val repository: HomeRepository):
         } catch (e: Exception) {
             moviesNowPlaying.postValue(NetWorkResult.Error<MovieResponse>(e.message))
         }
+    }
+
+    fun addWatchedMovie(userId: String, movie: Movie) = viewModelScope.launch {
+        repository.addWatchedMovie(userId, movie)
+    }
+
+    fun getWatchedMovies(userId: String) = viewModelScope.launch {
+        val movies = repository.getWatchedMovies(userId)
+        watchedMovies.postValue(movies)
     }
 }

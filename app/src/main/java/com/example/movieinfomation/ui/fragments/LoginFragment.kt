@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.inputmethod.InputMethodManager
-import android.widget.EditText
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
@@ -19,7 +18,6 @@ import com.example.movieinfomation.other.AppUtils
 import com.example.movieinfomation.other.NetWorkResult
 import com.example.movieinfomation.ui.viewmodels.HomeViewModel
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.auth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.auth.userProfileChangeRequest
 import com.google.firebase.ktx.Firebase
@@ -46,7 +44,7 @@ class LoginFragment: Fragment(R.layout.fragment_login) {
         auth = Firebase.auth
         val currentUser = auth.currentUser
         if (currentUser != null) {
-            Timber.tag("user").d("${currentUser.toString()}")
+            Timber.tag("user").d("$currentUser")
             auth.signOut()
         }
     }
@@ -69,7 +67,6 @@ class LoginFragment: Fragment(R.layout.fragment_login) {
                 signUpWithEmail()
             }
         }
-
     }
 
     private fun signInWithAccount() {
@@ -80,6 +77,8 @@ class LoginFragment: Fragment(R.layout.fragment_login) {
             auth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener {task ->
                     if (task.isSuccessful) {
+                        homeViewModel.userId = Firebase.auth.currentUser?.uid ?: ""
+                        homeViewModel.getWatchedMovies(homeViewModel.userId)
                         fetchData()
                     } else {
                         Toast.makeText(requireContext(), task.exception.toString(), Toast.LENGTH_SHORT).show()

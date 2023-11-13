@@ -91,6 +91,7 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
         val rcmAdapter = MovieRecyclerAdapter(list, requireContext())
         rcmAdapter.setOnItemClickListener {
             homeViewModel.getMovieDetail(it.id)
+            homeViewModel.addWatchedMovie(homeViewModel.userId, it)
             findNavController().navigate(R.id.action_searchFragment_to_movieDetailFragment)
         }
         binding.rcvRecommend.apply {
@@ -103,6 +104,7 @@ class SearchFragment : Fragment(R.layout.fragment_search) {
         val rcvAdapter = MovieRecyclerAdapter(list, requireContext())
         rcvAdapter.setOnItemClickListener {
             homeViewModel.getMovieDetail(it.id)
+            homeViewModel.addWatchedMovie(homeViewModel.userId, it)
             findNavController().navigate(R.id.action_searchFragment_to_movieDetailFragment)
         }
         binding.rcvTrending.apply {

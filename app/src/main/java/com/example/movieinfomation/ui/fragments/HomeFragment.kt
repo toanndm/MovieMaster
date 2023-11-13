@@ -61,6 +61,11 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         bindDataOfUser()
     }
 
+    override fun onResume() {
+        super.onResume()
+        homeViewModel.getWatchedMovies(homeViewModel.userId)
+    }
+
     private fun bindDataOfUser() {
         val user = Firebase.auth.currentUser
         user?.let {
@@ -75,6 +80,11 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
 
     private fun subscribeToObserve() {
+
+        homeViewModel.watchedMovies.observe(viewLifecycleOwner, Observer {
+            Timber.tag("watched").d(it.toString())
+            setRecycleViewContinue(it)
+        })
 
         homeViewModel.moviesWithGenre.observe(viewLifecycleOwner, Observer { response ->
             when (response) {
@@ -140,6 +150,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         val rcvAdapter = MovieRecyclerAdapter(list, requireContext())
         rcvAdapter.setOnItemClickListener {
             homeViewModel.getMovieDetail(it.id)
+            homeViewModel.addWatchedMovie(homeViewModel.userId, it)
             findNavController().navigate(R.id.action_homeFragment_to_movieDetailFragment)
         }
         binding.rcvCategorizedMovie.apply {
@@ -149,10 +160,24 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
     }
 
+    private fun setRecycleViewContinue(list: MutableList<Movie>) {
+        val rcvContinueAdapter = MovieRecyclerAdapter(list, requireContext())
+        rcvContinueAdapter.setOnItemClickListener {
+            homeViewModel.getMovieDetail(it.id)
+            findNavController().navigate(R.id.action_homeFragment_to_movieDetailFragment)
+        }
+        binding.rcvContinueWatching.apply {
+            adapter = rcvContinueAdapter
+            layoutManager = LinearLayoutManager(requireContext(), LinearLayoutManager.HORIZONTAL, false)
+        }
+
+    }
+
     private fun setViewPager(list: List<Movie>) {
         val adapter = ViewPagerAdapter(list, requireContext())
         adapter.setOnItemClickListener {
             homeViewModel.getMovieDetail(it.id)
+            homeViewModel.addWatchedMovie(homeViewModel.userId, it)
             findNavController().navigate(R.id.action_homeFragment_to_movieDetailFragment)
         }
         binding.viewpagerPopularMovie.adapter = adapter

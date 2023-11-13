@@ -58,6 +58,7 @@ class AllMovieFragment : Fragment(R.layout.fragment_all_movie) {
     private fun setOnItemClick() {
         movieAdapter.setOnItemClickListener {
             homeViewModel.getMovieDetail(it.id)
+            homeViewModel.addWatchedMovie(homeViewModel.userId, it)
             findNavController().navigate(R.id.action_allMovieFragment_to_movieDetailFragment)
         }
     }

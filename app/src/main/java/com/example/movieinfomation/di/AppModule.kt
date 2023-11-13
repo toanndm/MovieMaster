@@ -3,6 +3,9 @@ package com.example.movieinfomation.di
 import com.example.movieinfomation.api.ApiService
 import com.example.movieinfomation.other.ApiKey
 import com.example.movieinfomation.other.Constants
+import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.firestore.ktx.firestore
+import com.google.firebase.ktx.Firebase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -26,5 +29,7 @@ object AppModule {
         .build()
         .create(ApiService::class.java)
 
-
+    @Singleton
+    @Provides
+    fun provideFiresStoreDB() = FirebaseFirestore.getInstance()
 }
