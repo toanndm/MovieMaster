@@ -1,5 +1,6 @@
 package com.example.movieinfomation.ui.viewmodels
 
+import android.net.Uri
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -12,6 +13,10 @@ import com.example.movieinfomation.models.VideoResponse
 import com.example.movieinfomation.other.ApiKey
 import com.example.movieinfomation.other.NetWorkResult
 import com.example.movieinfomation.repositories.HomeRepository
+import com.google.firebase.Firebase
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.auth.userProfileChangeRequest
+import com.google.firebase.storage.FirebaseStorage
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import timber.log.Timber
@@ -49,12 +54,30 @@ class HomeViewModel @Inject constructor(private val repository: HomeRepository):
     var userId = ""
     var watchedMovies = MutableLiveData<MutableList<Movie>>()
 
+    var imageUri = MutableLiveData<Uri>()
+    var imageLink = MutableLiveData<String>()
+
     init {
         getGenres()
         getPopularToday()
         getMoviesWithGenre()
         getMoviesTrending()
         getMoviesNowPlaying()
+    }
+
+    fun uploadImage(uri: Uri) {
+        viewModelScope.launch {
+            var storage = FirebaseStorage.getInstance()
+            var storageRef = storage.reference.child("images/$userId")
+            storageRef.putFile(uri).addOnSuccessListener {
+                Timber.d("Upload success")
+                val result = it.metadata!!.reference!!.downloadUrl;
+                result.addOnSuccessListener {uri ->
+                    imageLink.value = uri.toString()
+                    Timber.tag("Image").d("${imageLink.value}")
+                }
+            }
+        }
     }
 
     fun popBackStack() {

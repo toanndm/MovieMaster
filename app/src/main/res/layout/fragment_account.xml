@@ -41,7 +41,7 @@
 
         <com.google.android.material.textview.MaterialTextView
             android:id="@+id/tvUpload"
-            android:text="Upload Image"
+            android:text="Choose Image"
             android:fontFamily="sans-serif"
             android:textColor="@color/orange"
             android:textSize="16sp"
@@ -95,6 +95,10 @@
                 android:id="@+id/emailEtProfile"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textColor="@color/white_grey"
+                android:focusable="false"
+                android:clickable="false"
+                android:cursorVisible="false"
                 android:hint="Email"
                 android:inputType="textEmailAddress" />
         </com.google.android.material.textfield.TextInputLayout>

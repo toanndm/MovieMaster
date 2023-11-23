@@ -19,6 +19,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.viewpager2.widget.CompositePageTransformer
 import androidx.viewpager2.widget.MarginPageTransformer
 import androidx.viewpager2.widget.ViewPager2
+import com.bumptech.glide.Glide
 import com.example.movieinfomation.R
 import com.example.movieinfomation.adapters.CustomSpinnerAdapter
 import com.example.movieinfomation.adapters.MovieRecyclerAdapter
@@ -70,11 +71,18 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         val user = Firebase.auth.currentUser
         user?.let {
             val name = it.displayName
+            val url = it.photoUrl
             if (name != null) {
                 binding.tvAccount.text = "Hello, $name"
             } else {
                 binding.tvAccount.text = "Hello"
             }
+            Glide
+                .with(requireContext())
+                .load(url)
+                .error(R.drawable.ic_account)
+                .centerCrop()
+                .into(binding.profileImage)
         }
     }
 
