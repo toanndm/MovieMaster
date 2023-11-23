@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.activityViewModels
 import com.bumptech.glide.Glide
@@ -39,6 +40,29 @@ class AccountFragment : Fragment(R.layout.fragment_account) {
         clickApplyProfile()
         clickChooseImage()
         subscribeToObserve()
+        changePassword()
+    }
+
+    private fun changePassword() {
+        binding.btnChange.setOnClickListener {
+            val pass = binding.passwordEtProfile.text.toString()
+            val newPass = binding.newPasswordEtProfile.text.toString()
+            if (pass.isNotEmpty() && newPass.isNotEmpty() && pass == newPass && pass.length > 6) {
+                user!!.updatePassword(newPass)
+                    .addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            Timber.d("Changed password")
+                            binding.passwordEtProfile.setText("")
+                            binding.newPasswordEtProfile.setText("")
+                            activity?.currentFocus?.clearFocus()
+                            Toast.makeText(requireContext(), "Change password success!", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+            } else {
+                Toast.makeText(requireContext(), "Password invalid!!", Toast.LENGTH_SHORT).show()
+                activity?.currentFocus?.clearFocus()
+            }
+        }
     }
 
     private fun subscribeToObserve() {
@@ -59,7 +83,6 @@ class AccountFragment : Fragment(R.layout.fragment_account) {
                         Timber.tag("updateURL").d("Update success")
                     }
                 }
-
         }
     }
 
@@ -84,7 +107,21 @@ class AccountFragment : Fragment(R.layout.fragment_account) {
 
 
     private fun clickApplyProfile() {
-        
+        val phone = binding.phoneEtProfile.text.toString()
+        val name = binding.nameEtProfile.text.toString()
+        if (phone.isNotEmpty() && name.isNotEmpty()) {
+            val profileUpdates = userProfileChangeRequest {
+                displayName = name
+            }
+
+            user!!.updateProfile(profileUpdates)
+                .addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        Timber.tag("updateURL").d("Update success")
+                    }
+                }
+        }
+
     }
 
     private fun setUserInfo() {

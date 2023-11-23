@@ -81,7 +81,8 @@ class LoginFragment: Fragment(R.layout.fragment_login) {
                         homeViewModel.getWatchedMovies(homeViewModel.userId)
                         fetchData()
                     } else {
-                        Toast.makeText(requireContext(), task.exception.toString(), Toast.LENGTH_SHORT).show()
+                        hideProgressBar()
+                        Toast.makeText(requireContext(), "Email or Password is invalid!!", Toast.LENGTH_SHORT).show()
                     }
                 }
         } else {
